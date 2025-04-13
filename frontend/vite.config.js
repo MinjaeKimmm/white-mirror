@@ -4,6 +4,13 @@ import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
+  server: {
+    host: true,
+    allowedHosts: [
+      'whitemirror.kiminjae.me',
+      'api.whitemirror.kiminjae.me'
+    ],
+  },
   plugins: [
     react(),
     tailwindcss()
