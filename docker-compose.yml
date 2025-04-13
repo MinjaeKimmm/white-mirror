@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  postgres-db:
+    image: postgres:16-alpine
+    container_name: white-mirror-pg
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pg-volume/pgdata:/var/lib/postgresql/data
+      - ./pg-volume/sql/:/docker-entrypoint-initdb.d/
+    networks:
+      - white-mirror-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: white-mirror-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8888:80"
+    volumes:
+      - ./pg-volume/pgadmin:/var/lib/pgadmin
+    networks:
+      - white-mirror-network
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+
+  backend:
+    build:
+      context: ./backend
+    container_name: white-mirror-back
+    command: bash -c "alembic upgrade head && python app/utils/setup_db.py && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    expose:
+      - 8000
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASS: ${POSTGRES_PASS}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST: postgres-db
+      POSTGRES_PORT: 5432
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      PPLX_API_KEY: ${PPLX_API_KEY}
+    volumes:
+      - ./backend:/app
+    networks:
+      - white-mirror-network
+      - caddy    depends_on:
+      postgres-db:
+        condition: service_healthy
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: white-mirror-front
+    expose:
+      - 5173
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=https://api.whitemirror.kiminjae.me  # Production API URL
+    networks:
+      - white-mirror-network
+      - caddy
+    depends_on:
+      - backend
+    restart: always
+
+networks:
+  white-mirror-network:
+    name: white-mirror-network
+  caddy:
+    external: true

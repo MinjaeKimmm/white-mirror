@@ -11,8 +11,8 @@ def make_middleware() -> list[Middleware]:
         Middleware(
             CORSMiddleware,
             allow_origins=[
-                "http://localhost:3000",
-                "http://localhost:5173",
+                "https://whitemirror.kiminjae.me",
+                "http://whitemirror.kiminjae.me",
             ],
             allow_credentials=True,
             allow_methods=["*"],
