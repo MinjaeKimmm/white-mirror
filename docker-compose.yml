@@ -72,7 +72,7 @@ services:
       - ./frontend:/app
       - /app/node_modules
     environment:
-      - VITE_API_URL=http://api.whitemirror.kiminjae.me  # Production API URL
+      - VITE_API_URL=http://whitemirror-api.kiminjae.me  # Production API URL
     networks:
       - white-mirror-network
       - caddy
