@@ -11,8 +11,7 @@ COPY . .
 
 # Build arguments
 ARG VITE_API_URL
-ENV VITE_API_URL=${VITE_API_URL}
-
+ENV VITE_API_URL=https://whitemirror-api.kiminjae.me
 # Build the application
 RUN npm run build
 
