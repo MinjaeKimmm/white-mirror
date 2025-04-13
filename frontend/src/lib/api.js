@@ -11,6 +11,17 @@ const api = axios.create({
   },
 });
 
+// Force HTTPS
+api.interceptors.request.use((config) => {
+  if (config.baseURL && config.baseURL.startsWith('http://')) {
+    config.baseURL = config.baseURL.replace('http://', 'https://');
+  }
+  if (config.url && config.url.startsWith('http://')) {
+    config.url = config.url.replace('http://', 'https://');
+  }
+  return config;
+});
+
 // User authentication endpoints
 export const authApi = {
   // Register a new user

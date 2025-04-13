@@ -12,6 +12,17 @@ const api = axios.create({
   },
 });
 
+// Force HTTPS
+api.interceptors.request.use((config) => {
+  if (config.baseURL && config.baseURL.startsWith('http://')) {
+    config.baseURL = config.baseURL.replace('http://', 'https://');
+  }
+  if (config.url && config.url.startsWith('http://')) {
+    config.url = config.url.replace('http://', 'https://');
+  }
+  return config;
+});
+
 /**
  * Agent API methods for analyzing manipulative communication
  */
