@@ -13,6 +13,8 @@ def make_middleware() -> list[Middleware]:
             allow_origins=[
                 "https://whitemirror.kiminjae.me",
                 "http://whitemirror.kiminjae.me",
+                "https://api.whitemirror.kiminjae.me",
+                "http://api.whitemirror.kiminjae.me",
             ],
             allow_credentials=True,
             allow_methods=["*"],
