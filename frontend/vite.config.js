@@ -8,7 +8,7 @@ export default defineConfig({
     host: true,
     allowedHosts: [
       'whitemirror.kiminjae.me',
-      'api.whitemirror.kiminjae.me'
+      'whitemirror-api.kiminjae.me'
     ],
   },
   plugins: [
