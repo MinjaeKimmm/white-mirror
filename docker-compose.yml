@@ -65,6 +65,8 @@ services:
   frontend:
     build:
       context: ./frontend
+      args:
+        - VITE_API_URL=http://whitemirror-api.kiminjae.me
     container_name: white-mirror-front
     expose:
       - 3010
