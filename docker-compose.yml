@@ -56,7 +56,8 @@ services:
       - ./backend:/app
     networks:
       - white-mirror-network
-      - caddy    depends_on:
+      - caddy
+    depends_on:
       postgres-db:
         condition: service_healthy
     restart: always
