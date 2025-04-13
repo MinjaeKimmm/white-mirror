@@ -41,9 +41,9 @@ services:
     build:
       context: ./backend
     container_name: white-mirror-back
-    command: bash -c "alembic upgrade head && python app/utils/setup_db.py && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    command: bash -c "alembic upgrade head && python app/utils/setup_db.py && uvicorn app.main:app --host 0.0.0.0 --port 8010 --reload"
     expose:
-      - 8000
+      - 8010
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASS: ${POSTGRES_PASS}
@@ -67,7 +67,7 @@ services:
       context: ./frontend
     container_name: white-mirror-front
     expose:
-      - 5173
+      - 3010
     volumes:
       - ./frontend:/app
       - /app/node_modules
