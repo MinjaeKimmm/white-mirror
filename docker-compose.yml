@@ -66,7 +66,7 @@ services:
     build:
       context: ./frontend
       args:
-        - VITE_API_URL=http://whitemirror-api.kiminjae.me
+        - VITE_API_URL=https://whitemirror-api.kiminjae.me
     container_name: white-mirror-front
     expose:
       - 3010
@@ -74,7 +74,7 @@ services:
       - ./frontend:/app
       - /app/node_modules
     environment:
-      - VITE_API_URL=http://whitemirror-api.kiminjae.me  # Production API URL
+      - VITE_API_URL=https://whitemirror-api.kiminjae.me  # Production API URL
     networks:
       - white-mirror-network
       - caddy
